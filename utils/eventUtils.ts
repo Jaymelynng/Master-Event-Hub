@@ -15,14 +15,6 @@ export const getEventTypeColor = (type: EventType): string => {
   }
 }
 
-export const getDaysInMonth = (): string[] => {
-  const days = []
-  for (let i = 1; i <= 30; i++) {
-    days.push(`June ${i}, 2025`)
-  }
-  return days
-}
-
 export const filterEvents = (
   events: Event[],
   selectedGyms: Set<string>,

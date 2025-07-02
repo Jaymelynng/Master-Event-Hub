@@ -4,9 +4,9 @@ import { useState, type MutableRefObject } from "react"
 import { ExternalLink, Copy, CheckCircle } from "lucide-react"
 import type { Event, EventType } from "@/types"
 import { EVENT_TYPE_COLORS, COLORS } from "@/constants/theme"
-import { getDaysInMonth } from "@/utils/eventUtils"
 import { copyToClipboard } from "@/utils/copyUtils"
 import { getGymEventTypeUrl } from "@/constants/gymUrls"
+import { getDaysInMonth, formatMonthYear } from "@/utils/dateUtils"
 
 interface CalendarViewProps {
   events: Event[]
@@ -14,9 +14,19 @@ interface CalendarViewProps {
   selectedGyms: Set<string>
   selectedEventTypes: Set<string>
   gymRefs: MutableRefObject<Record<string, HTMLElement | null>>
+  selectedMonth: number
+  selectedYear: number
 }
 
-export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes, gymRefs }: CalendarViewProps) => {
+export const CalendarView = ({
+  events,
+  allGyms,
+  selectedGyms,
+  selectedEventTypes,
+  gymRefs,
+  selectedMonth,
+  selectedYear,
+}: CalendarViewProps) => {
   const [hoveredEvent, setHoveredEvent] = useState<number | null>(null)
   const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({})
   const [calendarPage, setCalendarPage] = useState<1 | 2>(1)
@@ -122,6 +132,18 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
         ))}
       </div>
     )
+  }
+
+  const getMonthYearFromEvents = (events: Event[]): string => {
+    if (events.length === 0) return "July 2025"
+
+    const firstEvent = events[0]
+    if (!firstEvent.date) return "July 2025"
+
+    const dateParts = firstEvent.date.match(/(\w+ \d+)/)
+    if (!dateParts) return "July 2025"
+
+    return dateParts[1]
   }
 
   return (
@@ -317,7 +339,7 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
         {/* Calendar Navigation */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="font-bold" style={{ color: COLORS.text }}>
-            June 2025 Calendar
+            {formatMonthYear(selectedMonth, selectedYear)} Calendar
           </h3>
           <div className="flex items-center gap-2">
             <button
@@ -342,7 +364,7 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
                 color: calendarPage === 2 ? COLORS.white : COLORS.text,
               }}
             >
-              Days 16-30
+              Days 16-31
             </button>
           </div>
         </div>
@@ -354,8 +376,8 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
                 <th className="p-2 border" style={{ color: COLORS.text }}>
                   Gym
                 </th>
-                {getDaysInMonth()
-                  .slice(calendarPage === 1 ? 0 : 15, calendarPage === 1 ? 15 : 30)
+                {getDaysInMonth(selectedMonth, selectedYear)
+                  .slice(calendarPage === 1 ? 0 : 15, calendarPage === 1 ? 15 : 31)
                   .map((day, i) => {
                     const date = new Date(`${day}`)
                     const dayNum = calendarPage === 1 ? i + 1 : i + 16
@@ -379,8 +401,8 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
                   >
                     {gym}
                   </td>
-                  {getDaysInMonth()
-                    .slice(calendarPage === 1 ? 0 : 15, calendarPage === 1 ? 15 : 30)
+                  {getDaysInMonth(selectedMonth, selectedYear)
+                    .slice(calendarPage === 1 ? 0 : 15, calendarPage === 1 ? 15 : 31)
                     .map((day, j) => (
                       <td key={j} className="p-2 border align-top h-24 relative overflow-visible">
                         {renderCalendarCell(gym, day)}
