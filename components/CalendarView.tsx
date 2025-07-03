@@ -4,7 +4,7 @@ import { useState, type MutableRefObject } from "react"
 import { ExternalLink, Copy, CheckCircle } from "lucide-react"
 import type { Event, EventType } from "@/types"
 import { EVENT_TYPE_COLORS, COLORS } from "@/constants/theme"
-import { getDaysInMonth } from "@/utils/eventUtils"
+import { getDaysInMonth, getCurrentMonthInfo } from "@/utils/eventUtils"
 import { copyToClipboard } from "@/utils/copyUtils"
 import { getGymEventTypeUrl } from "@/constants/gymUrls"
 
@@ -20,6 +20,9 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
   const [hoveredEvent, setHoveredEvent] = useState<number | null>(null)
   const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({})
   const [calendarPage, setCalendarPage] = useState<1 | 2>(1)
+  
+  // Get current month info
+  const currentMonthInfo = getCurrentMonthInfo()
 
   const handleCopy = async (text: string, id: string) => {
     const success = await copyToClipboard(text)
@@ -317,7 +320,7 @@ export const CalendarView = ({ events, allGyms, selectedGyms, selectedEventTypes
         {/* Calendar Navigation */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="font-bold" style={{ color: COLORS.text }}>
-            June 2025 Calendar
+            {currentMonthInfo.monthYear} Calendar
           </h3>
           <div className="flex items-center gap-2">
             <button

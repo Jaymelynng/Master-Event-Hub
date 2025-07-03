@@ -15,12 +15,36 @@ export const getEventTypeColor = (type: EventType): string => {
   }
 }
 
-export const getDaysInMonth = (): string[] => {
+export const getDaysInMonth = (year?: number, month?: number): string[] => {
+  const now = new Date()
+  const currentYear = year || now.getFullYear()
+  const currentMonth = month || now.getMonth() // 0-based (July = 6)
+  
+  // Get the month name
+  const monthName = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })
+  
+  // Get number of days in the month
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+  
   const days = []
-  for (let i = 1; i <= 30; i++) {
-    days.push(`June ${i}, 2025`)
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(`${monthName} ${i}, ${currentYear}`)
   }
   return days
+}
+
+export const getCurrentMonthInfo = () => {
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = now.getMonth()
+  const monthName = now.toLocaleString('default', { month: 'long' })
+  
+  return {
+    year: currentYear,
+    month: currentMonth,
+    monthName,
+    monthYear: `${monthName} ${currentYear}`
+  }
 }
 
 export const filterEvents = (
