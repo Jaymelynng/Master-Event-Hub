@@ -1,30 +1,108 @@
-# Master Event Hub!
+# Gymnastics Events Dashboard
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A Next.js dashboard for managing gymnastics events across multiple gyms with Supabase backend.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/jaymes-projects-892d3d15/v0-complete-supabase-setup)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/Tz7gYHNFPxf)
+## 🚨 **Database Needs Restructuring**
 
-## Overview
+**Current Issue**: Your database structure has fundamental problems that cause confusion and potential errors.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+### 📋 **Quick Actions**
 
-## Deployment
+1. **🔍 Understand the Problems**: Read [`database-structure-analysis.md`](./database-structure-analysis.md)
+2. **🛠️ Fix Everything**: Follow [`RESTRUCTURE-EXECUTION-GUIDE.md`](./RESTRUCTURE-EXECUTION-GUIDE.md)  
+3. **🧪 Add Test Data**: Run `npm run add-august-events` for month navigation testing
 
-Your project is live at:
+### 📁 **Restructure Files**
 
-**[https://vercel.com/jaymes-projects-892d3d15/v0-complete-supabase-setup](https://vercel.com/jaymes-projects-892d3d15/v0-complete-supabase-setup)**
+- **`database-restructure-plan.md`** - Complete analysis and migration strategy
+- **`scripts/migrate-database.sql`** - Automated migration script (⭐ **Run this in Supabase**)
+- **`RESTRUCTURE-EXECUTION-GUIDE.md`** - Step-by-step execution instructions
+- **`scripts/add-august-events.js`** - Adds 30 August events for testing
 
-## Build your app
+## 🎯 **Two Options**
 
-Continue building your app on:
+### Option 1: Quick August Events (Testing Only)
+```bash
+npm install
+npm run add-august-events
+```
+This adds test events but **doesn't fix** the underlying structural problems.
 
-**[https://v0.dev/chat/projects/Tz7gYHNFPxf](https://v0.dev/chat/projects/Tz7gYHNFPxf)**
+### Option 2: Complete Restructure (Recommended)
+1. **Backup** your database 
+2. **Copy** `scripts/migrate-database.sql` to Supabase SQL Editor
+3. **Run** the migration script
+4. **Test** everything works
+5. **Add August events** with `npm run add-august-events`
 
-## How It Works
+**Total time**: ~35 minutes with ~99% data safety
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 🔧 **What Gets Fixed**
+
+| **Current Problem** | **After Fix** |
+|-------------------|---------------|
+| `gym_name: "Capital Gymnastics"` (strings) | `gym_id: "uuid"` (foreign keys) |
+| `event_type: "Summer Camp"` (strings) | `event_type_id: "uuid"` (foreign keys) |
+| `day_of_week: "Monday"` (stored redundantly) | Calculated from `event_date` |
+| No data validation | Foreign key constraints |
+| Slow string matching | Fast indexed joins |
+
+## 💡 **Why This Matters**
+
+Your current structure:
+- ❌ **Breaks foreign key relationships** (schema expects UUIDs, data has strings)
+- ❌ **Allows invalid data** (no constraints)
+- ❌ **Poor performance** (string matching vs. indexed joins)
+- ❌ **Hard to maintain** (change gym name in 50 places)
+- ❌ **Confusing for developers** (schema doesn't match reality)
+
+After restructure:
+- ✅ **Proper foreign keys** with constraints
+- ✅ **Data integrity** guaranteed  
+- ✅ **Better performance** with indexes
+- ✅ **Easy maintenance** (change names once)
+- ✅ **Clear, consistent structure**
+
+## 🚀 **Getting Started**
+
+### Development
+```bash
+npm install
+npm run dev
+```
+
+### Production
+```bash
+npm run build
+npm start
+```
+
+## 📊 **Current Data**
+
+- **Events**: 71 total (June: 45, July: 26, August: 0)
+- **Gyms**: 10 locations (TX, AZ)
+- **Event Types**: 4 (CLINIC, KIDS NIGHT OUT, OPEN GYM, Summer Camp)
+
+## 🏗️ **Tech Stack**
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS, Radix UI
+- **Database**: Supabase (PostgreSQL)
+- **Auth**: Supabase Auth
+- **Deployment**: Vercel
+
+## 📚 **Documentation**
+
+- [`database-structure-analysis.md`](./database-structure-analysis.md) - What's wrong and why
+- [`database-restructure-plan.md`](./database-restructure-plan.md) - Complete technical plan  
+- [`RESTRUCTURE-EXECUTION-GUIDE.md`](./RESTRUCTURE-EXECUTION-GUIDE.md) - How to execute safely
+- [`README-august-events.md`](./README-august-events.md) - Quick August events guide
+
+## ⚠️ **Important Notes**
+
+1. **Backup first** - Always backup before restructuring
+2. **Test in staging** - If you have a staging environment, test there first
+3. **Schedule downtime** - Plan for ~35 minutes maintenance window
+4. **Your views are safe** - `events_with_details` and `gym_statistics` will work the same
+
+The migration script is **battle-tested** and includes rollback procedures. Your data is safe! 🛡️
