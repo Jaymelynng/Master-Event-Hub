@@ -42,12 +42,7 @@ export default function GymnasticsEventsDashboard() {
     return isDateInMonth(event.date, selectedMonth, selectedYear)
   })
 
-  // DEBUG: Show sample event dates to check filtering
-  if (allEvents.length > 0 && filteredEventsByMonth.length === 0) {
-    console.log("⚠️ DEBUG - No events match current filter!")
-    console.log("📅 DEBUG - Sample event dates:", allEvents.slice(0, 3).map((event: any) => event.date))
-    console.log("🎯 DEBUG - Looking for:", formatMonthYear(selectedMonth, selectedYear))
-  }
+
 
   // Get available months with event counts
   const availableMonths = (() => {
@@ -124,8 +119,6 @@ export default function GymnasticsEventsDashboard() {
 
         setAllEvents(transformedEvents)
         console.log("✅ Events transformed and loaded successfully")
-        console.log("📊 DEBUG - Sample transformed event:", transformedEvents[0])
-        console.log("📊 DEBUG - Total events loaded:", transformedEvents.length)
       } catch (err: any) {
         console.error("❌ Failed to fetch events:", err)
         setError(err.message)
@@ -140,11 +133,7 @@ export default function GymnasticsEventsDashboard() {
 
   const dashboard = useDashboard(allEvents)
 
-  // DEBUG: Log what's happening with data
-  console.log("📊 DEBUG - All events count:", allEvents.length)
-  console.log("📊 DEBUG - Filtered events count:", filteredEventsByMonth.length)
-  console.log("📊 DEBUG - Dashboard metrics:", dashboard.metrics)
-  console.log("📊 DEBUG - Selected month/year:", selectedMonth, selectedYear)
+
 
   // Helper functions - using consistent date formatting to prevent hydration issues
   function formatDate(dateString: string): string {
@@ -314,10 +303,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here`}
       )}
 
       {/* Dashboard Stats */}
-      <div style={{ backgroundColor: 'red', padding: '20px', margin: '20px' }}>
-        <h2>DEBUG: Stats should be here</h2>
-        <p>Metrics: {JSON.stringify(dashboard.metrics)}</p>
-        <p>Selected Events Count: {dashboard.selectedEvents.size}</p>
+      <div className="mb-6 p-4 bg-blue-100 border border-blue-300 rounded">
+        <h3 className="font-bold">Stats Test</h3>
+        <p>Total Events: {dashboard.metrics.totalEvents}</p>
+        <p>Total Gyms: {dashboard.metrics.totalGyms}</p>
       </div>
       <DashboardStats metrics={dashboard.metrics} selectedEventsCount={dashboard.selectedEvents.size} />
 
