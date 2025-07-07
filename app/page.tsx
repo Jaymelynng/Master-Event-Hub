@@ -314,6 +314,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here`}
       )}
 
       {/* Dashboard Stats */}
+      <div style={{ backgroundColor: 'red', padding: '20px', margin: '20px' }}>
+        <h2>DEBUG: Stats should be here</h2>
+        <p>Metrics: {JSON.stringify(dashboard.metrics)}</p>
+        <p>Selected Events Count: {dashboard.selectedEvents.size}</p>
+      </div>
       <DashboardStats metrics={dashboard.metrics} selectedEventsCount={dashboard.selectedEvents.size} />
 
       {/* View Controls */}
