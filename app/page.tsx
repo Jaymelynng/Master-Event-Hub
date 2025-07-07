@@ -138,7 +138,7 @@ export default function GymnasticsEventsDashboard() {
     fetchEvents()
   }, [])
 
-  const dashboard = useDashboard(filteredEventsByMonth)
+  const dashboard = useDashboard(allEvents)
 
   // DEBUG: Log what's happening with data
   console.log("📊 DEBUG - All events count:", allEvents.length)
