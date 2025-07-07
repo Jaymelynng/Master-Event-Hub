@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { AlertCircle, CheckCircle, Database, RefreshCw } from "lucide-react"
-import { supabase, testSupabaseConnection } from "@/lib/supabase-unified"
+import { supabase, testSupabaseConnection } from "@/lib/supabase"
 import { COLORS } from "@/constants/theme"
 
 interface DiagnosticResult {

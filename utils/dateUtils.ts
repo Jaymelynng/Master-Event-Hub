@@ -45,11 +45,10 @@ export const getMonthYearFromDate = (dateString: string): { month: number; year:
     }
   } catch (error) {
     console.error("Error parsing date:", dateString, error)
-    // Return current month/year as fallback
-    const now = new Date()
+    // Return fixed fallback to prevent hydration issues
     return {
-      month: now.getMonth(),
-      year: now.getFullYear(),
+      month: 5, // June (0-indexed)
+      year: 2025,
     }
   }
 

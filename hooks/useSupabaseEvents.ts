@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabase-client"
+import { supabase } from "@/lib/supabase"
 
 export const useSupabaseEvents = () => {
   const [events, setEvents] = useState([])
@@ -65,7 +65,8 @@ export const useSupabaseEvents = () => {
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
-  const month = date.toLocaleString("default", { month: "long" })
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const month = monthNames[date.getMonth()]
   const day = date.getDate()
   const year = date.getFullYear()
   return `${month} ${day}, ${year}`
@@ -73,5 +74,6 @@ function formatDate(dateString: string): string {
 
 function getDayOfWeek(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleString("default", { weekday: "long" })
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  return dayNames[date.getDay()]
 }

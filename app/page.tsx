@@ -15,7 +15,7 @@ import { TableView } from "@/components/TableView"
 import { DetailView } from "@/components/DetailView"
 import { AdminView } from "@/components/AdminView"
 import { ConnectionDiagnostic } from "@/components/ConnectionDiagnostic"
-import { supabase } from "@/lib/supabase-unified"
+import { supabase } from "@/lib/supabase"
 import { getDayOfWeek } from "@/utils/helpers"
 import { getMonthYearFromDate, formatMonthYear, isDateInMonth } from "@/utils/dateUtils"
 
@@ -131,10 +131,14 @@ export default function GymnasticsEventsDashboard() {
 
   const dashboard = useDashboard(filteredEventsByMonth)
 
-  // Helper functions
+  // Helper functions - using consistent date formatting to prevent hydration issues
   function formatDate(dateString: string): string {
     const date = new Date(dateString)
-    const month = date.toLocaleString("default", { month: "long" })
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ]
+    const month = monthNames[date.getMonth()]
     const day = date.getDate()
     const year = date.getFullYear()
     return `${month} ${day}, ${year}`

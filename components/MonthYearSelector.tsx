@@ -33,8 +33,8 @@ export const MonthYearSelector = ({
     "December",
   ]
 
-  const currentYear = new Date().getFullYear()
-  const years = Array.from({ length: 5 }, (_, i) => currentYear + i - 2) // 2 years back, current, 2 years forward
+  // Fixed years to prevent hydration mismatch (instead of using new Date().getFullYear())
+  const years = [2023, 2024, 2025, 2026, 2027] // Fixed range to prevent hydration issues
 
   const goToPreviousMonth = () => {
     if (selectedMonth === 0) {

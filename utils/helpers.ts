@@ -1,7 +1,8 @@
 // Helper function for getting day of week from date string
 export function getDayOfWeek(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleString("default", { weekday: "long" })
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  return dayNames[date.getDay()]
 }
 
 // Helper function to get month and year from events

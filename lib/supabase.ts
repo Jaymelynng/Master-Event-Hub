@@ -22,6 +22,26 @@ if (!cleanUrl.startsWith("https://") || !cleanUrl.includes(".supabase.co")) {
 
 export const supabase = createClient(cleanUrl, supabaseAnonKey.trim())
 
+// Test connection function
+export async function testSupabaseConnection() {
+  try {
+    const { data, error } = await supabase.from("gyms").select("count").limit(1)
+
+    if (error) {
+      throw new Error(`Database connection failed: ${error.message}`)
+    }
+
+    return { success: true, data }
+  } catch (error: any) {
+    return { success: false, error: error.message }
+  }
+}
+
+// Check if Supabase is available
+export function isSupabaseAvailable(): boolean {
+  return !!(supabaseUrl && supabaseAnonKey)
+}
+
 export type Database = {
   public: {
     Tables: {
