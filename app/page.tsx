@@ -303,11 +303,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here`}
       )}
 
       {/* Dashboard Stats */}
-      <div className="mb-6 p-4 bg-blue-100 border border-blue-300 rounded">
-        <h3 className="font-bold">Stats Test</h3>
-        <p>Total Events: {dashboard.metrics.totalEvents}</p>
-        <p>Total Gyms: {dashboard.metrics.totalGyms}</p>
-      </div>
       <DashboardStats metrics={dashboard.metrics} selectedEventsCount={dashboard.selectedEvents.size} />
 
       {/* View Controls */}
