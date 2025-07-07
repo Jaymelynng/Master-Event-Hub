@@ -42,7 +42,14 @@ export const CalendarView = ({
   }
 
   const renderCalendarCell = (gym: string, day: string) => {
-    const dayEvents = events.filter(
+    // Filter events for the current month/year for calendar display
+    const monthFilteredEvents = events.filter((event) => {
+      if (!event.date) return false
+      const eventDate = new Date(event.date)
+      return eventDate.getMonth() === selectedMonth && eventDate.getFullYear() === selectedYear
+    })
+    
+    const dayEvents = monthFilteredEvents.filter(
       (event) =>
         event.gymName === gym &&
         event.date === day &&
@@ -335,11 +342,15 @@ export const CalendarView = ({
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-lg shadow-md" style={{ overflow: "visible" }}>
+              <div className="bg-white rounded-lg shadow-md" style={{ overflow: "visible" }}>
         {/* Calendar Navigation */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="font-bold" style={{ color: COLORS.text }}>
-            {formatMonthYear(selectedMonth, selectedYear)} Calendar
+            {formatMonthYear(selectedMonth, selectedYear)} Calendar ({events.filter(event => {
+              if (!event.date) return false
+              const eventDate = new Date(event.date)
+              return eventDate.getMonth() === selectedMonth && eventDate.getFullYear() === selectedYear
+            }).length} events this month)
           </h3>
           <div className="flex items-center gap-2">
             <button

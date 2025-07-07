@@ -317,7 +317,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here`}
       <div>
         {viewMode === "calendar" && (
           <CalendarView
-            events={filteredEventsByMonth}
+            events={allEvents}
             allGyms={dashboard.allGyms}
             selectedGyms={dashboard.selectedGyms}
             selectedEventTypes={dashboard.selectedEventTypes}
